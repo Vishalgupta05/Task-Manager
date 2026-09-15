@@ -21,13 +21,16 @@ A full-stack task management web application with secure JWT-based authenticatio
 ## 📸 Screenshots
 
 **Dashboard — empty state**
-![Dashboard empty state](./screenshots/dashboard-empty-state.png)
+![Dashboard empty state]<img width="960" height="600" alt="Screenshot 2026-09-10 114121" src="https://github.com/user-attachments/assets/b999d47f-f5ae-4397-9f2c-e9d7ba98b7fb" />
+
 
 **Dashboard — task list with priorities & due dates**
-![Dashboard with tasks](./screenshots/dashboard-task-list.png)
+![Dashboard with tasks]<img width="958" height="595" alt="Screenshot 2026-09-10 114642" src="https://github.com/user-attachments/assets/55e59c84-53f7-4991-91ce-81bb65ae4934" />
+
 
 **Dashboard — progress tracking & status filter**
-![Dashboard progress tracking](./screenshots/dashboard-progress-tracking.png)
+![Dashboard progress tracking]<img width="960" height="600" alt="Screenshot 2026-09-10 114719" src="https://github.com/user-attachments/assets/a7257087-39cd-4751-aeff-7416c0ee8032" />
+
 
 ---
 
