@@ -1,94 +1,174 @@
-# Task Manager — Full-Stack Task Management System
+# 📋 Task Manager — Full-Stack Task Management System
 
-A full-stack task management application with secure JWT-based authentication
-and personalized task management, built with Spring Boot + Spring Security on
-the backend and React + Tailwind CSS on the frontend.
+A full-stack task management web application with secure JWT-based authentication, built with **Spring Boot 3 + Spring Security** on the backend and **React 18 (Vite) + Tailwind CSS** on the frontend. Every user gets their own private, searchable, filterable task list.
 
-## Features
-- JWT-based authentication (register/login), passwords hashed with BCrypt
-- Personalized task lists — every user only sees their own tasks
-- Full CRUD: create, update, delete, and toggle completion
-- Priority levels (Low / Medium / High) and due-date management
-- Responsive dashboard with search, filtering (priority/status), and progress tracking
+---
 
-## Tech Stack
-- **Backend:** Java 17, Spring Boot 3, Spring Security, JWT (jjwt), Hibernate/JPA, MySQL
-- **Frontend:** React 18 (Vite), React Router, Axios, Tailwind CSS
+## ✨ Features
 
-## Project Structure
+- 🔐 **JWT authentication** — register & login, passwords hashed with BCrypt
+- 👤 **Per-user task isolation** — every user only sees and manages their own tasks
+- ✅ **Full CRUD** — create, read, update, delete tasks
+- 🔄 **One-click completion toggle**
+- 🏷️ **Priority levels** — `LOW` / `MEDIUM` / `HIGH` (defaults to `MEDIUM`)
+- 📅 **Due dates** with overdue highlighting on the frontend
+- 🔍 **Search & filter** — by keyword, priority, and completion status (server-side)
+- 📊 **Auto-logout** on token expiry (401 response) via an Axios interceptor
+- 🛡️ **Centralized error handling** — validation errors, 404s, and access-denied cases return clean JSON
+
+---
+
+## 📸 Screenshots
+
+**Dashboard — empty state**
+![Dashboard empty state](./screenshots/dashboard-empty-state.png)
+
+**Dashboard — task list with priorities & due dates**
+![Dashboard with tasks](./screenshots/dashboard-task-list.png)
+
+**Dashboard — progress tracking & status filter**
+![Dashboard progress tracking](./screenshots/dashboard-progress-tracking.png)
+
+---
+
+## 🧱 Tech Stack
+
+| Layer        | Technology |
+|--------------|------------|
+| Backend      | Java 17, Spring Boot 3.3.2, Spring Security, Spring Data JPA / Hibernate |
+| Auth         | JWT (`jjwt` 0.12.5), BCrypt password hashing |
+| Database     | MySQL 8 |
+| Frontend     | React 18, Vite 5, React Router 6, Axios |
+| Styling      | Tailwind CSS 3 |
+| Build tools  | Maven (backend), npm (frontend) |
+
+---
+
+## 📁 Project Structure
+
 ```
 task-manager/
-├── backend/     # Spring Boot REST API
-└── frontend/    # React + Tailwind SPA
+├── backend/
+│   └── src/main/java/com/taskmanager/
+│       ├── config/          # Spring Security & CORS configuration
+│       ├── controller/      # REST controllers (Auth, Task)
+│       ├── dto/             # Request/response DTOs
+│       ├── entity/          # JPA entities (User, Task, Priority)
+│       ├── exception/       # Global exception handler
+│       ├── repository/      # Spring Data JPA repositories
+│       ├── security/        # JWT filter, JWT util, UserDetailsService
+│       └── service/         # Business logic (TaskService)
+│
+└── frontend/
+    └── src/
+        ├── api/              # Axios instance with JWT interceptor
+        ├── components/       # Navbar, TaskForm, TaskList, TaskItem
+        ├── context/          # AuthContext (login/register/logout state)
+        └── pages/            # Login, Register, Dashboard
 ```
 
-## 1. Backend Setup
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
+
 - Java 17+
 - Maven 3.8+
 - MySQL 8+ running locally
+- Node.js 18+
 
-### Steps
-1. Create a MySQL user/password matching `application.properties`, or edit
-   `backend/src/main/resources/application.properties`:
+### 1. Backend Setup
+
+The database `task_manager_db` is created automatically on first run.
+
+1. Open `backend/src/main/resources/application.properties` and set your local MySQL credentials:
    ```properties
    spring.datasource.username=root
-   spring.datasource.password=root
+   spring.datasource.password=<your-mysql-password>
    ```
-   The database `task_manager_db` is auto-created on first run
-   (`createDatabaseIfNotExist=true`).
-
-2. From the `backend/` folder, run:
+2. Run the backend from the `backend/` folder:
    ```bash
    mvn spring-boot:run
    ```
-   The API starts on **http://localhost:8080**.
+3. The API starts on **http://localhost:8080**.
 
-3. (Recommended for production) Move the JWT secret and DB credentials to
-   environment variables instead of the properties file.
+> ⚠️ **Security note:** `application.properties` currently contains a hardcoded JWT secret and DB password for local development. Before deploying to production, move `jwt.secret`, `spring.datasource.password`, and `app.cors.allowed-origins` into environment variables.
 
-### API Endpoints
-| Method | Endpoint                    | Description                       | Auth |
-|--------|------------------------------|-----------------------------------|------|
-| POST   | `/api/auth/register`         | Register a new user               | No   |
-| POST   | `/api/auth/login`            | Log in, returns JWT                | No   |
-| GET    | `/api/tasks`                 | List/search/filter tasks          | Yes  |
-| GET    | `/api/tasks/{id}`            | Get one task                      | Yes  |
-| POST   | `/api/tasks`                 | Create task                       | Yes  |
-| PUT    | `/api/tasks/{id}`            | Update task                       | Yes  |
-| PATCH  | `/api/tasks/{id}/toggle`     | Toggle completion                 | Yes  |
-| DELETE | `/api/tasks/{id}`            | Delete task                       | Yes  |
+### 2. Frontend Setup
 
-`GET /api/tasks` supports optional query params: `keyword`, `priority`
-(`LOW`/`MEDIUM`/`HIGH`), `completed` (`true`/`false`).
-
-Authenticated requests need header: `Authorization: Bearer <token>`
-
-## 2. Frontend Setup
-
-### Prerequisites
-- Node.js 18+
-
-### Steps
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-The app runs on **http://localhost:5173** and talks to the backend at
-`http://localhost:8080/api` (see `src/api/axios.js` to change this).
 
-## 3. Using the App
-1. Open http://localhost:5173, click **Create one** to register.
+The app runs on **http://localhost:5173** and talks to the backend at `http://localhost:8080/api` (configured in `src/api/axios.js`).
+
+### 3. Using the App
+
+1. Go to `http://localhost:5173` and register a new account.
 2. Log in — you'll land on the dashboard.
-3. Add tasks with a title, description, priority, and due date.
-4. Use the search box and dropdown filters to narrow the list.
-5. Check the box to mark a task complete; watch the progress bar update.
-6. Edit or delete tasks with the buttons on each row.
+3. Add a task with a title, description, priority, and due date.
+4. Use the search box and priority/status filters to narrow the list.
+5. Check the box to mark a task complete, or edit/delete it from the row.
 
-## Notes / Next Steps
-- For production, set `jwt.secret`, DB credentials, and
-  `app.cors.allowed-origins` via environment variables.
-- Add refresh tokens if you want longer-lived sessions without re-login.
-- Add pagination to `/api/tasks` if task lists grow large.
+---
+
+## 🔌 API Reference
+
+Base URL: `http://localhost:8080/api`
+
+### Auth (`/auth`) — no token required
+
+| Method | Endpoint         | Description                    |
+|--------|------------------|---------------------------------|
+| POST   | `/auth/register` | Register a new user, returns JWT |
+| POST   | `/auth/login`    | Log in, returns JWT              |
+
+### Tasks (`/tasks`) — requires `Authorization: Bearer <token>`
+
+| Method | Endpoint             | Description                                         |
+|--------|-----------------------|------------------------------------------------------|
+| GET    | `/tasks`              | List tasks (supports `keyword`, `priority`, `completed` query params) |
+| GET    | `/tasks/{id}`         | Get a single task                                    |
+| POST   | `/tasks`               | Create a new task                                    |
+| PUT    | `/tasks/{id}`         | Update a task                                        |
+| PATCH  | `/tasks/{id}/toggle`  | Toggle completion status                             |
+| DELETE | `/tasks/{id}`         | Delete a task                                        |
+
+**Example — create a task:**
+```bash
+curl -X POST http://localhost:8080/api/tasks \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Finish README", "priority": "HIGH", "dueDate": "2026-09-20"}'
+```
+
+---
+
+## 🗄️ Data Model
+
+**User**
+- `id`, `username` (unique), `email` (unique), `password` (BCrypt-hashed), `createdAt`
+
+**Task**
+- `id`, `title`, `description`, `priority` (`LOW`/`MEDIUM`/`HIGH`), `dueDate`, `completed`, `createdAt`, `updatedAt`, `user` (owning user, foreign key)
+
+Each task belongs to exactly one user (`@ManyToOne`), and all task queries are scoped by the authenticated user's ID — so users can never see or modify each other's tasks.
+
+---
+
+## 🛠️ Roadmap / Possible Improvements
+
+- [ ] Move secrets (JWT key, DB password) to environment variables for production
+- [ ] Add refresh tokens for longer-lived sessions without re-login
+- [ ] Add pagination to `GET /api/tasks` for large task lists
+- [ ] Add automated tests (unit + integration)
+- [ ] Dockerize backend + frontend + MySQL for one-command setup
+
+---
+
+## 📄 License
+
+No license specified yet — add one (e.g. MIT) if you plan to open-source this project publicly.
