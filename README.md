@@ -52,22 +52,41 @@ A full-stack task management web application with secure JWT-based authenticatio
 ```
 task-manager/
 ├── backend/
-│   └── src/main/java/com/taskmanager/
-│       ├── config/          # Spring Security & CORS configuration
-│       ├── controller/      # REST controllers (Auth, Task)
-│       ├── dto/             # Request/response DTOs
-│       ├── entity/          # JPA entities (User, Task, Priority)
-│       ├── exception/       # Global exception handler
-│       ├── repository/      # Spring Data JPA repositories
-│       ├── security/        # JWT filter, JWT util, UserDetailsService
-│       └── service/         # Business logic (TaskService)
+│   ├── pom.xml
+│   └── src/main/
+│       ├── java/com/taskmanager/
+│       │   ├── TaskManagerApplication.java
+│       │   ├── config/          # SecurityConfig — Spring Security & CORS
+│       │   ├── controller/      # AuthController, TaskController
+│       │   ├── dto/             # AuthRequest, AuthResponse, RegisterRequest, TaskRequest, TaskResponse
+│       │   ├── entity/          # User, Task, Priority
+│       │   ├── exception/       # GlobalExceptionHandler
+│       │   ├── repository/      # TaskRepository, UserRepository
+│       │   ├── security/        # JwtAuthFilter, JwtUtil, CustomUserDetailsService
+│       │   └── service/         # TaskService
+│       └── resources/
+│           └── application.properties
 │
-└── frontend/
-    └── src/
-        ├── api/              # Axios instance with JWT interceptor
-        ├── components/       # Navbar, TaskForm, TaskList, TaskItem
-        ├── context/          # AuthContext (login/register/logout state)
-        └── pages/            # Login, Register, Dashboard
+├── frontend/
+│   ├── package.json / vite.config.js / tailwind.config.js
+│   └── src/
+│       ├── main.jsx
+│       ├── App.jsx
+│       ├── api/
+│       │   └── axios.js         # Axios instance with JWT interceptor
+│       ├── components/
+│       │   ├── Navbar.jsx
+│       │   ├── TaskForm.jsx
+│       │   ├── TaskItem.jsx
+│       │   └── TaskList.jsx
+│       ├── context/
+│       │   └── AuthContext.jsx  # login/register/logout state
+│       └── pages/
+│           ├── Login.jsx
+│           ├── Register.jsx
+│           └── Dashboard.jsx
+│
+└── screenshots/                 # App screenshots used in this README
 ```
 
 ---
